@@ -149,7 +149,7 @@ pipeline {
             steps {
                 dir("${WORKSPACE_DIR}") {
                     sh 'echo Running tests...'
-                    // Add test commands
+                    sh 'python -m unittest discover tests'
                 }
             }
         }
