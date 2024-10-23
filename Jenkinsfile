@@ -1,46 +1,38 @@
-// pipeline {
-//     agent any
-//     stages {
-//         stage('Clone Repository') {
-//             steps {
-//                 // Clone the repository in /workspace (WSL path)
-//                 script {
-//                     sh 'rm -rf /workspace/streamlit-app || true'
-//                     sh 'git clone https://github.com/GeorgiaChatz/project_test.git /workspace/streamlit-app'
-//                 }
-//             }
-//         }
-//         stage('Install Dependencies') {
-//             steps {
-//                 dir('/workspace/streamlit-app') {
-//                     sh 'pip3 install -r requirements.txt'
-//                 }
-//             }
-//         }
-//         stage('Run Streamlit App') {
-//             steps {
-//                 dir('/workspace/streamlit-app') {
-//                     sh 'streamlit run app.py &'
-//                 }
-//             }
-//         }
-//     }
-// }
 pipeline {
     agent any
     options {
         skipDefaultCheckout(true)
     }
+    environment {
+        WORKSPACE_DIR = ''
+    }
     stages {
+        stage('Determine Branch and Workspace') {
+            steps {
+                script {
+                    // Get the branch name
+                    def branchName = env.BRANCH_NAME
+
+                    // Set workspace directory based on branch name
+                    if (branchName == 'main') {
+                        env.WORKSPACE_DIR = '/workspace/streamlit-app'
+                    } else {
+                        env.WORKSPACE_DIR = '/workspace-dev/streamlit-app'
+                    }
+
+                    echo "Building branch: ${branchName}"
+                    echo "Workspace Directory: ${env.WORKSPACE_DIR}"
+                }
+            }
+        }
         stage('Setup Workspace') {
             steps {
-                // Ensure the workspace directory exists
-                sh 'mkdir -p /workspace/streamlit-app'
+                sh 'mkdir -p ${WORKSPACE_DIR}'
             }
         }
         stage('Checkout Code') {
             steps {
-                dir('/workspace/streamlit-app') {
+                dir("${env.WORKSPACE_DIR}") {
                     // Clean workspace (optional)
                     deleteDir()
                     // Checkout code
@@ -50,27 +42,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('/workspace/streamlit-app') {
+                dir("${env.WORKSPACE_DIR}") {
                     // Your build commands here
                     sh 'echo Building...'
                 }
             }
         }
-        stage('Test') {
-            steps {
-                dir('/workspace/streamlit-app') {
-                    // Your test commands here
-                    sh 'echo Testing...'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                dir('/workspace/streamlit-app') {
-                    // Your deploy commands here
-                    sh 'echo Deploying...'
-                }
-            }
-        }
+        // Add additional stages as needed
     }
 }
