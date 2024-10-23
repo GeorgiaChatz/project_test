@@ -164,11 +164,11 @@ pipeline {
                                     screen -S streamlit_app_prod -X quit
                                 fi
                             '''
-                           withCredentials([string(credentialsId: 'WSL_USER_PASSWORD', variable: 'WSL_PASSWORD')]) {
-                                sh '''
-                                    echo "$WSL_PASSWORD" | sudo -S -u wsl screen -dmS streamlit_app_prod bash -c "cd /workspace/streamlit-app && /home/wsl/.local/bin/streamlit run app.py > /workspace/streamlit_prod.log 2>&1"
-                                '''
-}
+                      withCredentials([usernamePassword(credentialsId: 'wsl-credentials', usernameVariable: 'WSL_USERNAME', passwordVariable: 'WSL_PASSWORD')]) {
+                            sh '''
+                                sudo -S -u $WSL_USERNAME bash -c "echo $WSL_PASSWORD | sudo -S screen -dmS streamlit_app_prod bash -c 'cd /workspace/streamlit-app && /home/wsl/.local/bin/streamlit run app.py > /workspace/streamlit_prod.log 2>&1'"
+                            '''
+                            }
                         }
                     }
                 }
