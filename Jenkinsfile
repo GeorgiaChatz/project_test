@@ -167,7 +167,7 @@ pipeline {
                             '''
                             // Start Streamlit app in screen session
                             sh '''
-                                screen -dmS streamlit_app_prod bash -c 'streamlit run your_app.py --server.port=8501'
+                                screen -S streamlit_app_prod bash -c 'streamlit run your_app.py'
                             '''
                         } else {
                             sh 'echo Deploying to Development...'
