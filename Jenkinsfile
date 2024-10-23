@@ -166,7 +166,7 @@ pipeline {
                             '''
                             // Start Streamlit app in screen session
                             sh '''
-                                screen -dmS streamlit_app_prod bash -c 'cd ${WORKSPACE_DIR} && streamlit run app.py'
+                                screen -dmS streamlit_app_prod bash -c 'cd /workspace/streamlit-app && streamlit run app.py'
                             '''
                         }
                     }
