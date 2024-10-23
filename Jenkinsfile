@@ -165,7 +165,7 @@ pipeline {
                                 fi
                             '''
                             sh '''
-                                sudo -u wsl screen -dmS streamlit_app_prod bash -c 'cd /workspace/streamlit-app && /home/wsl/.local/bin/streamlit run app.py > /workspace/streamlit_prod.log 2>&1'
+                                sudo -u wsl screen -dmS streamlit_app_prod bash -c 'cd /workspace/streamlit-app && /home/wsl/.local/bin/streamlit run app.py'
 
                             '''
                         }
