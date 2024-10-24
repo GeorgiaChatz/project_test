@@ -158,28 +158,24 @@ pipeline {
                 dir("${WORKSPACE_DIR}") {
                     script {
                         if (branchName == 'main') {
-                            sh 'echo Deploying to Production...'
-                            // Stop existing app if running
+                             sh 'echo Deploying to Production...'
                             sh '''
                                 if screen -list | grep -q "streamlit_app_prod"; then
                                     screen -S streamlit_app_prod -X quit
                                 fi
                             '''
-                            // Start Streamlit app in screen session
                             sh '''
-                                screen -dmS streamlit_app_prod bash -c 'streamlit run your_app.py --server.port=8501'
+                                sudo -u wsl screen -dmS streamlit_app_prod bash -c 'cd /workspace/streamlit-app && /home/wsl/.local/bin/streamlit run app.py'
                             '''
                         } else {
-                            sh 'echo Deploying to Development...'
-                            // Stop existing app if running
+                           sh 'echo Deploying to Development...'
                             sh '''
                                 if screen -list | grep -q "streamlit_app_dev"; then
                                     screen -S streamlit_app_dev -X quit
                                 fi
                             '''
-                            // Start Streamlit app in screen session
                             sh '''
-                                screen -dmS streamlit_app_dev bash -c 'streamlit run your_app.py --server.port=8502'
+                                sudo -u wsl screen -dmS streamlit_app_dev bash -c 'cd /workspace-dev/streamlit-app && /home/wsl/.local/bin/streamlit run app.py'
                             '''
                         }
                     }
