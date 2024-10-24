@@ -3,4 +3,4 @@ import streamlit as st
 
 st.title("Simple Streamlit App")
 st.write("Hello, welcome to my Streamlit app!")
-st.write("Commit change")
+st.write("Nice change")
