@@ -170,7 +170,7 @@ pipeline {
                         } else {
                            sh 'echo Deploying to Development...'
                             sh '''
-                                if screen -list | grep -q 'streamlit_app_dev'; then
+                                if screen -list | grep 'streamlit_app_dev'; then
                                     screen -X -S streamlit_app_dev quit
                                 fi
                             '''
