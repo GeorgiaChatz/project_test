@@ -170,8 +170,7 @@ pipeline {
                         } else {
                            sh 'echo Deploying to Development...'
                             sh '''
-                                echo "Forcefully terminating streamlit_app_dev session..."
-                                pkill -f "screen -S streamlit_app_dev"
+                                pkill -f 'screen -S streamlit_app_dev'
                             '''
                             sh '''
                                 sudo -u wsl screen -dmS streamlit_app_dev bash -c 'cd /workspace-dev/streamlit-app && /home/wsl/.local/bin/streamlit run app.py'
