@@ -144,7 +144,7 @@ if page == "Workflow":
     # Plate details
     st.subheader("Plate Details")
     well_columns = st.text_input("Well columns of the plate0 (e.g., 2,3,4 or range 2-4):")
-    plate_number = st.number_input("Plate Number", min_value=1, step=1)
+    #plate_number = st.number_input("Plate Number", min_value=1, step=1)
 
     # File uploader for readout files
     st.subheader("Upload Readout Files")
@@ -170,13 +170,13 @@ if page == "Workflow":
                 if uploaded_file:
                     file_name = uploaded_file.name
                     file_data = uploaded_file.read()
-                    insert_plate_info(experiment_id, plate_number, file_name, file_data)
+                    insert_plate_info(experiment_id, i, file_name, file_data)
 
             # Step 4: Insert layout template if uploaded
             if layout_template:
                 layout_file_name = layout_template.name
                 layout_file_data = layout_template.read()
-                insert_plate_info(experiment_id, plate_number, layout_file_name, layout_file_data)
+                insert_plate_info(experiment_id, "layout", layout_file_name, layout_file_data)
 
             st.success("Experiment and associated files inserted successfully!")
         else:
